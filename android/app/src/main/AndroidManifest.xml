@@ -1,8 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
+    
         android:label="converter_latlong"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+         <meta-data android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyA6jdKH730BVsJlKXCXUwRZLR7S9qUhnBQ"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
