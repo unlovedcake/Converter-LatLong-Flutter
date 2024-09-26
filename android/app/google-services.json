@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "524508093365",
+    "project_id": "converter-latlong",
+    "storage_bucket": "converter-latlong.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524508093365:android:be36663660b52712b617fc",
+        "android_client_info": {
+          "package_name": "com.converter_latlong"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6jdKH730BVsJlKXCXUwRZLR7S9qUhnBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

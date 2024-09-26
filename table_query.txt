@@ -1,0 +1,10 @@
+CREATE TABLE coords_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    notes TEXT,
+    lat DECIMAL(10, 7) NOT NULL,  -- DD format: typically lat/lng have up to 7 decimal places
+    lng DECIMAL(10, 7) NOT NULL,  -- DD format: typically lat/lng have up to 7 decimal places
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX (lat),
+    INDEX (lng)
+);
