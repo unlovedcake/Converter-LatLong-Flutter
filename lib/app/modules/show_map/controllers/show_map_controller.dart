@@ -16,7 +16,8 @@ class ShowMapController extends GetxController {
       Marker(
         markerId: MarkerId('marker_1'),
         position: initialPosition,
-        infoWindow: InfoWindow(title: 'Marker in San Francisco'),
+        infoWindow: InfoWindow(
+            title: 'Marker in San Francisco', snippet: '14.5619, 121.0579'),
       ),
     );
   }
