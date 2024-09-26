@@ -29,8 +29,7 @@ class HomeView extends GetView<HomeController> {
                 height: 50,
               ),
               TextField(
-                decoration:
-                    InputDecoration(labelText: 'Latitude (Decimal Degrees)'),
+                decoration: InputDecoration(labelText: 'Latitude'),
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   controller.latitudeDD.value = value;
@@ -38,8 +37,7 @@ class HomeView extends GetView<HomeController> {
               ),
               SizedBox(height: 16.0),
               TextField(
-                decoration:
-                    InputDecoration(labelText: 'Longitude (Decimal Degrees)'),
+                decoration: InputDecoration(labelText: 'Longitude'),
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   controller.longitudeDD.value = value;
