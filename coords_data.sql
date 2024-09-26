@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 26, 2024 at 11:41 AM
+-- Generation Time: Sep 26, 2024 at 06:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `coords_data` (
   `id` int(11) NOT NULL,
   `notes` text DEFAULT NULL,
-  `lat` decimal(10,8) NOT NULL,
-  `lng` decimal(11,8) NOT NULL,
+  `lat` varchar(20) NOT NULL,
+  `lng` varchar(20) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -41,7 +41,7 @@ CREATE TABLE `coords_data` (
 --
 
 INSERT INTO `coords_data` (`id`, `notes`, `lat`, `lng`, `created_at`, `updated_at`) VALUES
-(1, 'Some note about the location', 37.77490000, -122.41940000, '2024-09-26 09:35:29', '2024-09-26 09:35:29');
+(8, 'notes', '23° 27\' 24.48\"', '325° 26\' 28.32\"', '2024-09-26 16:03:54', '2024-09-26 16:03:54');
 
 --
 -- Indexes for dumped tables
@@ -63,7 +63,7 @@ ALTER TABLE `coords_data`
 -- AUTO_INCREMENT for table `coords_data`
 --
 ALTER TABLE `coords_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

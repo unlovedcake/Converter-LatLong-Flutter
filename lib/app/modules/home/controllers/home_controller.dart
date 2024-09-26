@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class HomeController extends GetxController {
   final latitudeDD = ''.obs;
   final longitudeDD = ''.obs;
   var latitudeDMS = ''.obs;
   var longitudeDMS = ''.obs;
+
+  var isLoading = false.obs;
 
   String convertToDMS(double decimalDegree) {
     int degrees = decimalDegree.floor(); // Get the whole degrees
@@ -20,7 +25,7 @@ class HomeController extends GetxController {
     return scaledCoordinate / 10000.0;
   }
 
-  void convertCoordinates() {
+  Future<void> convertCoordinates() async {
     try {
       // Convert to decimal degrees
       double latitudeDecimal = convertToDecimal(int.parse(latitudeDD.value));
@@ -29,45 +34,39 @@ class HomeController extends GetxController {
       // Convert to DMS format
       latitudeDMS.value = convertToDMS(latitudeDecimal);
       longitudeDMS.value = convertToDMS(longitudeDecimal);
+      await saveCoordinatesToDB();
     } catch (e) {
       Get.snackbar(
           'Error', 'Invalid coordinate values. Please enter valid numbers.');
     }
   }
 
-  // Function to simulate saving converted coordinates to the database
   Future<void> saveCoordinatesToDB() async {
+    isLoading(true);
     try {
-      // Simulate an AJAX POST request (replace with actual endpoint)
-      final response = await Future.delayed(Duration(seconds: 2), () {
-        return {
-          'status': 'success',
-          'message': 'Coordinates saved to the database'
-        };
-      });
+      var url = Uri.parse('http://10.0.2.2:3000/coords');
+      var response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "notes": 'notes',
+          "lat": latitudeDMS.value,
+          "lng": longitudeDMS.value,
+        }),
+      );
 
-      if (response['status'] == 'success') {
-        Get.snackbar('Success', response['message']!);
+      if (response.statusCode == 200) {
+        // Success
+        Get.snackbar("Success", "Coordinates added successfully");
       } else {
-        Get.snackbar('Error', 'Failed to save coordinates');
+        // Error
+        Get.snackbar("Error", "Failed to add coordinates");
       }
     } catch (e) {
-      Get.snackbar('Error', 'An error occurred while saving coordinates.');
+      print('ERROR: $e');
+      Get.snackbar("Error", "Something went wrong");
+    } finally {
+      isLoading(false);
     }
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 }

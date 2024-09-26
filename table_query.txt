@@ -1,10 +1,10 @@
 CREATE TABLE coords_data (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    notes TEXT,
-    lat DECIMAL(10, 7) NOT NULL,  -- DD format: typically lat/lng have up to 7 decimal places
-    lng DECIMAL(10, 7) NOT NULL,  -- DD format: typically lat/lng have up to 7 decimal places
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX (lat),
-    INDEX (lng)
+    id SERIAL PRIMARY KEY,  -- Automatically incrementing primary key
+    notes TEXT,             -- Text field for notes
+    lat VARCHAR(255) NOT NULL,  -- Latitude as a varchar, indexed
+    lng VARCHAR(255) NOT NULL,  -- Longitude as a varchar, indexed
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Created at timestamp
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  -- Updated at timestamp
+    INDEX (lat),  -- Index for latitude
+    INDEX (lng)   -- Index for longitude
 );
