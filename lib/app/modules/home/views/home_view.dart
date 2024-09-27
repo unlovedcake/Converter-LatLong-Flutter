@@ -58,12 +58,26 @@ class HomeView extends GetView<HomeController> {
                     ],
                   )),
               SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  controller.convertCoordinates();
-                },
-                child: Text('Convert Coords'),
-              ),
+              Obx(() => ElevatedButton.icon(
+                    onPressed: controller.isLoading.value
+                        ? null
+                        : () {
+                            controller.convertCoordinates();
+                          },
+                    icon: controller.isLoading.value
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 1,
+                            ))
+                        : null, // The icon to display
+                    label: Text('Convert Coords'), // The label of the button
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 12.0),
+                    ),
+                  )),
               SizedBox(height: 26.0),
               ElevatedButton(
                 onPressed: () {

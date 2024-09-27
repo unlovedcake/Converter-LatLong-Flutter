@@ -15,7 +15,7 @@ class ShowMapView extends GetView<ShowMapController> {
         centerTitle: true,
       ),
       body: GoogleMap(
-        mapType: MapType.hybrid,
+        mapType: MapType.terrain,
         onMapCreated: controller.onMapCreated,
         initialCameraPosition: CameraPosition(
           target: controller.initialPosition,
