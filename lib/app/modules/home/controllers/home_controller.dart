@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -37,7 +38,11 @@ class HomeController extends GetxController {
       await saveCoordinatesToDB();
     } catch (e) {
       Get.snackbar(
-          'Error', 'Invalid coordinate values. Please enter valid numbers.');
+        'Error',
+        'Invalid coordinate values. Please enter valid numbers.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
   }
 
@@ -45,26 +50,35 @@ class HomeController extends GetxController {
     isLoading(true);
     try {
       var url = Uri.parse('http://10.0.2.2:3000/coords');
-      var response = await http.post(
-        url,
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "notes": 'notes',
-          "lat": latitudeDMS.value,
-          "lng": longitudeDMS.value,
-        }),
-      );
+      var response = await http
+          .post(
+            url,
+            headers: {"Content-Type": "application/json"},
+            body: jsonEncode({
+              "notes": 'notes',
+              "lat": latitudeDMS.value,
+              "lng": longitudeDMS.value,
+            }),
+          )
+          .timeout(Duration(seconds: 5));
 
       if (response.statusCode == 200) {
-        // Success
         Get.snackbar("Success", "Coordinates added successfully");
       } else {
-        // Error
-        Get.snackbar("Error", "Failed to add coordinates");
+        isLoading(false);
+        Get.snackbar(
+          "Error",
+          "Failed to add coordinates",
+          backgroundColor: Colors.red,
+        );
       }
     } catch (e) {
       print('ERROR: $e');
-      Get.snackbar("Error", "Something went wrong");
+      Get.snackbar(
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+          "Error",
+          "Something went wrong");
     } finally {
       isLoading(false);
     }

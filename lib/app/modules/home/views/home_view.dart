@@ -57,15 +57,37 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ],
                   )),
-              SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  controller.convertCoordinates();
-                },
-                child: Text('Convert Coords'),
-              ),
+              SizedBox(height: 46.0),
+              Obx(() => ElevatedButton.icon(
+                    onPressed: controller.isLoading.value
+                        ? null
+                        : () {
+                            controller.convertCoordinates();
+                          },
+                    icon: controller.isLoading.value
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 1,
+                            ))
+                        : null, // The icon to display
+                    label: Text('Convert Coords'), // The label of the button
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      fixedSize: Size(300, 50),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 12.0),
+                    ),
+                  )),
               SizedBox(height: 26.0),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(300, 50),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                ),
                 onPressed: () {
                   Get.toNamed(AppPages.SHOW_MAP);
                 },

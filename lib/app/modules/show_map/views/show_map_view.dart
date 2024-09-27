@@ -22,6 +22,9 @@ class ShowMapView extends GetView<ShowMapController> {
           zoom: 12.0,
         ),
         markers: controller.markers,
+        onTap: (LatLng position) {
+          controller.moveToPosition(position);
+        },
       ),
     );
   }

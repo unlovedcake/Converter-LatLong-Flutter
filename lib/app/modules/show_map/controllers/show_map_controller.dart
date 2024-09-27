@@ -12,14 +12,7 @@ class ShowMapController extends GetxController {
   void onInit() {
     super.onInit();
 
-    markers.add(
-      Marker(
-        markerId: MarkerId('marker_1'),
-        position: initialPosition,
-        infoWindow: InfoWindow(
-            title: 'Marker in San Francisco', snippet: '14.5619, 121.0579'),
-      ),
-    );
+    addMarker(initialPosition);
   }
 
   @override
@@ -32,7 +25,26 @@ class ShowMapController extends GetxController {
     super.onClose();
   }
 
+  void addMarker(LatLng position) {
+    markers.add(
+      Marker(
+        markerId: MarkerId('marker_1'),
+        position: initialPosition,
+        infoWindow: InfoWindow(
+            title: 'Marker in San Francisco', snippet: '14.5619, 121.0579'),
+      ),
+    );
+  }
+
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    moveToPosition(initialPosition);
+  }
+
+  void moveToPosition(LatLng position) {
+    mapController.animateCamera(
+      CameraUpdate.newLatLng(position),
+    );
+    addMarker(position);
   }
 }
