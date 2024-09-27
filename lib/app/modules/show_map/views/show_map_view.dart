@@ -15,13 +15,16 @@ class ShowMapView extends GetView<ShowMapController> {
         centerTitle: true,
       ),
       body: GoogleMap(
-        mapType: MapType.terrain,
+        mapType: MapType.hybrid,
         onMapCreated: controller.onMapCreated,
         initialCameraPosition: CameraPosition(
           target: controller.initialPosition,
           zoom: 12.0,
         ),
         markers: controller.markers,
+        onTap: (LatLng position) {
+          controller.moveToPosition(position);
+        },
       ),
     );
   }
