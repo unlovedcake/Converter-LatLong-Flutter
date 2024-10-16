@@ -23,19 +23,66 @@ class HomeController extends GetxController {
   }
 
   double convertToDecimal(int scaledCoordinate) {
-    return scaledCoordinate / 10000.0;
+    return scaledCoordinate / 100000.0;
+  }
+
+  String convertToDMSS(double latitude) {
+    // Get the degree part
+    int degrees = latitude.floor();
+
+    // Get the decimal part and convert it to minutes
+    double decimalMinutes = (latitude - degrees) * 60;
+    int minutes = decimalMinutes.floor();
+
+    // Get the decimal part of the minutes and convert it to seconds
+    double decimalSeconds = (decimalMinutes - minutes) * 60;
+    double seconds = decimalSeconds;
+
+    // Return formatted DMS string
+    return '$degrees° $minutes\' ${seconds.toStringAsFixed(2)}"';
+  }
+
+  bool isValidLatitude(String input) {
+    double? value = double.tryParse(input);
+    if (value == null) return false;
+    return value >= -90 && value <= 90;
+  }
+
+  bool isValidLongitude(String input) {
+    double? value = double.tryParse(input);
+    if (value == null) return false;
+    return value >= -180 && value <= 180;
   }
 
   Future<void> convertCoordinates() async {
     try {
       // Convert to decimal degrees
-      double latitudeDecimal = convertToDecimal(int.parse(latitudeDD.value));
-      double longitudeDecimal = convertToDecimal(int.parse(longitudeDD.value));
 
-      // Convert to DMS format
-      latitudeDMS.value = convertToDMS(latitudeDecimal);
-      longitudeDMS.value = convertToDMS(longitudeDecimal);
-      await saveCoordinatesToDB();
+      if (isValidLatitude(latitudeDD.value)) {
+        print('Valid Latitude');
+      } else {
+        print('Invalid Latitude');
+      }
+
+      if (isValidLongitude(longitudeDD.value)) {
+        print('Valid Longitude');
+      } else {
+        print('Invalid Longitude');
+      }
+
+      print('Convert latitude' + convertToDMSS(double.parse(latitudeDD.value)));
+      print(
+          'Convert longitude' + convertToDMSS(double.parse(longitudeDD.value)));
+
+      // double latitudeDecimal = convertToDecimal(int.parse(latitudeDD.value));
+      // double longitudeDecimal = convertToDecimal(int.parse(longitudeDD.value));
+      // print('Convert' + convertToDMSS(123.8392));
+      // print('Convert Decimal' + latitudeDecimal.toString());
+
+      // // Convert to DMS format
+      // latitudeDMS.value = convertToDMS(latitudeDecimal);
+      // longitudeDMS.value = convertToDMS(longitudeDecimal);
+      // await saveCoordinatesToDB();
     } catch (e) {
       Get.snackbar(
         'Error',

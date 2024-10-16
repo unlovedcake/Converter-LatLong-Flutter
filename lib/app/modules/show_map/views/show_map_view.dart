@@ -19,7 +19,10 @@ class ShowMapView extends GetView<ShowMapController> {
           onChanged: (value) => controller.query.value = value,
           decoration: InputDecoration(
             hintText: 'Search for a place',
-            border: OutlineInputBorder(),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(
+                  30.0), // Adjust the value for rounder corners
+            ),
             suffixIcon: IconButton(
                 onPressed: () {
                   controller.searchTextController.text = '';
@@ -33,18 +36,34 @@ class ShowMapView extends GetView<ShowMapController> {
       ),
       body: Stack(
         children: [
-          Obx(() => GoogleMap(
-                mapType: MapType.hybrid,
-                onMapCreated: controller.onMapCreated,
-                initialCameraPosition: CameraPosition(
-                  target: controller.initialPosition,
-                  zoom: 12.0,
-                ),
-                markers: controller.markers.value,
-                onTap: (LatLng position) {
-                  controller.moveToPosition(position);
-                },
-              )),
+          GetBuilder<ShowMapController>(
+            builder: (_) => Obx(() => GoogleMap(
+                  mapType: MapType.hybrid,
+                  onMapCreated: (GoogleMapController controllers) {
+                    controller.onMapCreated(controllers);
+                    controller.googleMapController.complete(controllers);
+
+                    print('Map Loaded');
+                  },
+                  //onMapCreated: controller.onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: controller.destination,
+                    zoom: 12.0,
+                  ),
+                  markers: controller.markers.value,
+                  polylines: {
+                    Polyline(
+                      polylineId: PolylineId('animated_polyline'),
+                      points: controller.polylineCoordinates.value,
+                      color: Colors.red,
+                      width: 4,
+                    ),
+                  },
+                  onTap: (LatLng position) {
+                    controller.moveToPosition(position);
+                  },
+                )),
+          ),
           Positioned(
               child: Obx(() => controller.isSearchTextFieldEmpty.value ||
                       controller.searchResults.isEmpty
@@ -67,24 +86,26 @@ class ShowMapView extends GetView<ShowMapController> {
                           itemBuilder: (context, index) {
                             final place = controller.searchResults[index];
                             return ListTile(
-                              leading: Icon(Icons.location_city_rounded),
+                              leading: Icon(
+                                Icons.person_pin_circle,
+                                color: Colors.blue,
+                              ),
                               title: Text(
                                   '${place.properties!.city ?? ''} ${place.properties!.name ?? ''}'),
                               onTap: () {
+                                controller.polylineCoordinates.value = [];
                                 controller.markers.value = {};
                                 controller.isSearchTextFieldEmpty.value = true;
-                                controller.initialPosition = LatLng(
+                                controller.destination = LatLng(
                                     place.geometry!.coordinates![1],
                                     place.geometry!.coordinates![0]);
 
                                 controller.markerId.value =
                                     place.geometry!.coordinates![1].toString();
-                                controller
-                                    .moveToPosition(controller.initialPosition);
-                                // controller
-                                //     .addMarker(controller.initialPosition);
 
-                                print(place.geometry!.coordinates![0]);
+                                controller.fetchRoute();
+                                controller
+                                    .moveToPosition(controller.destination);
                               },
                             );
                           },
